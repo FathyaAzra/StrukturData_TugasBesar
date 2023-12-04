@@ -10,9 +10,7 @@ struct Bab
     Bab* next;
 };
 
-void add(int mapelIndex)
-{
-    int priorlain;
+void add(Bab* mapelList[], int mapelIndex) {
     Bab* baru = new Bab();
     cout<<"Nama Bab Baru :";
     cin>> baru->namabab;
@@ -41,36 +39,61 @@ void add(int mapelIndex)
     cout<<"Prioritas 1-5 : ";
     cin>> baru->prioritas;
 
-    if (mapelIndex != -1) 
-    {
-        Bab* mapelList[mapelIndex];
-        Bab* temp = mapelList[mapelIndex];
-        if (temp == nullptr || temp->prioritas < baru->prioritas) {
-            baru->next = temp;
+    baru->next = nullptr; // Ensure the new node points to nullptr
+
+    if (mapelIndex >= 0 && mapelIndex < 5) {
+        if (mapelList[mapelIndex] == nullptr) {
+            // If the list is empty, insert at the beginning
             mapelList[mapelIndex] = baru;
         } else {
-            while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas) {
+            // If the list is not empty, add to the end
+            Bab* temp = mapelList[mapelIndex];
+            while (temp->next != nullptr) {
                 temp = temp->next;
             }
-            baru->next = temp->next;
             temp->next = baru;
         }
     } else {
         cout << "Mata pelajaran tidak valid" << endl;
+        delete baru; // Free memory if the index is invalid
     }
 }
 
-void view()
-{
-
+void view(Bab* mapelList[], int mapelIndex) {
+    Bab* ptr = mapelList[mapelIndex];
+    while (ptr != nullptr) {
+        cout << ptr->namabab << " (" << ptr->mapelbab << ")";
+        ptr = ptr->next;
+    }
 }
 
-void hapus()
-{
-    Bab* ptr;
-    cout<<"Masukkan nama bab : ";
-    cin>>ptr->namabab;
+void hapus(Bab* mapelList[], int mapelIndex) {
+    string namaHapus;
+    cout << "Masukkan nama bab yang ingin dihapus: ";
+    cin >> namaHapus;
+
+    Bab* current = mapelList[mapelIndex];
+    Bab* prev = nullptr;
+
+    while (current != nullptr && current->namabab != namaHapus) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == nullptr) {
+        cout << "Bab tidak ditemukan." << endl;
+        return;
+    }
+
+    if (prev == nullptr) {
+        mapelList[mapelIndex] = current->next;
+    } else {
+        prev->next = current->next;
+    }
+
+    delete current;
 }
+
 
 //Program Utama
 int main() {
@@ -100,15 +123,15 @@ int main() {
         switch (pilihan1)
         {
         case 1:
-            add(mapelIndex);
+            add(mapelList, mapelIndex);
             loopsemua=0;
             break;
         case 2:
-            view();
+            view(mapelList, mapelIndex);
             loopsemua=0;
             break;
         case 3:
-            hapus();
+            hapus(mapelList, mapelIndex);
             loopsemua=0;
             break;
         case 4:
