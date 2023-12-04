@@ -14,47 +14,53 @@ struct Bab
     Bab* next;
 };
 
-void prioritas()
+void add(int mapelIndex)
 {
-    //sesuai prioritas
-}
-
-void mapel()
-{
-    //pisah per mapel. inside procedure prioritas
-}
-
-
-//Procedure-procedure fitur
-void add()
-{
+    int priorlain;
     Bab* baru = new Bab();
     cout<<"Nama Bab Baru :\n";
     cin>> baru->namabab;
 
     cout<<"Mata Pelajaran :\n";
-    cout<<"1. MM\n";
-    cout<<"2. Fisika\n";
-    cout<<"3. Kimia\n";
-    cout<<"4. Biologi\n";
-    cout<<"5. TPS\n";
+    cout<<"- MM\n";
+    cout<<"- Fisika\n";
+    cout<<"- Kimia\n";
+    cout<<"- Biologi\n";
+    cout<<"- TPS\n";
     cout<<"Mata Pelajaran :\n";
     cin>> baru->mapelbab;
-    mapel();
 
-    cout<<"Prioritas UTBK :\n";
+    //Inisialisasi untuk pengelompokkan
+    if (baru->mapelbab == "MM") 
+            mapelIndex = 0;
+        else if (baru->mapelbab == "Fisika")
+            mapelIndex = 1;
+        else if (baru->mapelbab == "Kimia")
+            mapelIndex = 2;
+        else if (baru->mapelbab == "Biologi")
+            mapelIndex = 3;
+        else if (baru->mapelbab == "TPS")
+            mapelIndex = 4;
+
+    cout<<"Prioritas 1-5 : ";
     cin>> baru->prioritas;
-    if (start == NULL)
-        {
-            start = baru;
+
+    if (mapelIndex != -1) 
+    {
+        Bab* mapelList[mapelIndex];
+        Bab* temp = mapelList[mapelIndex];
+        if (temp == nullptr || temp->prioritas < baru->prioritas) {
+            baru->next = temp;
+            mapelList[mapelIndex] = baru;
+        } else {
+            while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas) {
+                temp = temp->next;
+            }
+            baru->next = temp->next;
+            temp->next = baru;
         }
-    else {
-        //mencari ujung dari linked list
-        Bab* temp = start;
-        while (temp->next != NULL) {
-            temp = temp->next;
-        }
-        temp->next = baru;
+    } else {
+        cout << "Mata pelajaran tidak valid" << endl;
     }
 }
 
@@ -63,10 +69,23 @@ void view()
 
 }
 
+void hapus()
+{
+    Bab* ptr;
+    cout<<"Masukkan nama bab : ";
+    cin>>ptr->namabab;
+}
+
 //Program Utama
 int main() {
     do 
     {
+        //Inisialisasi bab
+        Bab* mapelList[5];
+        for (int i = 0; i < 5; ++i) 
+            mapelList[i] = nullptr;
+        int mapelIndex = -1;
+
         //Halaman Depan
         cout<<"Selamat Datang di PRIORITASIN\n";
         cout<<"========================================\n";
@@ -82,19 +101,20 @@ int main() {
         switch (pilihan1)
         {
         case 1:
-            add();
+            add(mapelIndex);
             break;
         case 2:
-            /* code */
+            view();
             break;
         case 3:
-            /* code */
+            hapus();
             break;
         case 4:
-            /* code */
+            loopsemua=1;
             break;
         
         default:
+            loopsemua=1;
             break;
         }
         
