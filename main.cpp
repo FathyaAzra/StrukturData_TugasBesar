@@ -1,14 +1,11 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-
-//Inisialisasi
-    int loopsemua = 0, pilihan1;
 
 //membuat tipe data Node (elemen dari linked list)
 struct Bab 
 {
-    char namabab[30];
-    char mapelbab[30];
+    string namabab;
+    string mapelbab;
     int prioritas;
     Bab* next;
 };
@@ -17,7 +14,7 @@ void add(int mapelIndex)
 {
     int priorlain;
     Bab* baru = new Bab();
-    cout<<"Nama Bab Baru :\n";
+    cout<<"Nama Bab Baru :";
     cin>> baru->namabab;
 
     cout<<"Mata Pelajaran :\n";
@@ -26,7 +23,7 @@ void add(int mapelIndex)
     cout<<"- Kimia\n";
     cout<<"- Biologi\n";
     cout<<"- TPS\n";
-    cout<<"Mata Pelajaran :\n";
+    cout<<"Mata Pelajaran :";
     cin>> baru->mapelbab;
 
     //Inisialisasi untuk pengelompokkan
@@ -77,6 +74,9 @@ void hapus()
 
 //Program Utama
 int main() {
+    //Inisialisasi
+    int loopsemua = 0, pilihan1;
+
     do 
     {
         //Inisialisasi bab
@@ -93,20 +93,23 @@ int main() {
         cout<<"2. Lihat Bab Materi Sesuai Mata Pelajaran dan Prioritas\n";
         cout<<"3. Hapus Bab Materi\n";
         cout<<"4. Keluar dari PRIORITASIN\n";
-        cout<<"Pilih Fitur :\n";
-        cout<<"========================================\n";
+        cout<<"Pilih Fitur :";
         cin>>pilihan1;
+        cout<<"========================================\n";
 
         switch (pilihan1)
         {
         case 1:
             add(mapelIndex);
+            loopsemua=0;
             break;
         case 2:
             view();
+            loopsemua=0;
             break;
         case 3:
             hapus();
+            loopsemua=0;
             break;
         case 4:
             loopsemua=1;
@@ -118,7 +121,7 @@ int main() {
         }
         
     }
-    while (loopsemua=0);
+    while (loopsemua == 0);
 
     cout<<"\n\n Terima Kasih";
 
