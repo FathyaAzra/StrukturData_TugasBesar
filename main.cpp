@@ -3,7 +3,6 @@ using namespace std;
 
 //Inisialisasi
     int loopsemua = 0, pilihan1;
-    Bab* start = nullptr;
 
 //membuat tipe data Node (elemen dari linked list)
 struct Bab 
