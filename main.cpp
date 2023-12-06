@@ -1,23 +1,18 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-
-//Inisialisasi
-    int loopsemua = 0, pilihan1;
 
 //membuat tipe data Node (elemen dari linked list)
 struct Bab 
 {
-    char namabab[30];
-    char mapelbab[30];
+    string namabab;
+    string mapelbab;
     int prioritas;
     Bab* next;
 };
 
-void add(int mapelIndex)
-{
-    int priorlain;
+void add(Bab* mapelList[], int mapelIndex) {
     Bab* baru = new Bab();
-    cout<<"Nama Bab Baru :\n";
+    cout<<"Nama Bab Baru :";
     cin>> baru->namabab;
 
     cout<<"Mata Pelajaran :\n";
@@ -26,7 +21,7 @@ void add(int mapelIndex)
     cout<<"- Kimia\n";
     cout<<"- Biologi\n";
     cout<<"- TPS\n";
-    cout<<"Mata Pelajaran :\n";
+    cout<<"Mata Pelajaran :";
     cin>> baru->mapelbab;
 
     //Inisialisasi untuk pengelompokkan
@@ -44,25 +39,27 @@ void add(int mapelIndex)
     cout<<"Prioritas 1-5 : ";
     cin>> baru->prioritas;
 
-    if (mapelIndex != -1) 
-    {
-        Bab* mapelList[mapelIndex];
-        Bab* temp = mapelList[mapelIndex];
-        if (temp == nullptr || temp->prioritas < baru->prioritas) {
-            baru->next = temp;
+    baru->next = nullptr; // Ensure the new node points to nullptr
+
+    if (mapelIndex >= 0 && mapelIndex < 5) {
+        if (mapelList[mapelIndex] == nullptr) {
+            // If the list is empty, insert at the beginning
             mapelList[mapelIndex] = baru;
         } else {
-            while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas) {
+            // If the list is not empty, add to the end
+            Bab* temp = mapelList[mapelIndex];
+            while (temp->next != nullptr) {
                 temp = temp->next;
             }
-            baru->next = temp->next;
             temp->next = baru;
         }
     } else {
         cout << "Mata pelajaran tidak valid" << endl;
+        delete baru; // Free memory if the index is invalid
     }
 }
 
+<<<<<<< HEAD
 void view()
 {
  
@@ -70,11 +67,49 @@ void view()
 
 void hapus() {
   
+=======
+void view(Bab* mapelList[], int mapelIndex) {
+    Bab* ptr = mapelList[mapelIndex];
+    while (ptr != nullptr) {
+        cout << ptr->namabab << " (" << ptr->mapelbab << ")";
+        ptr = ptr->next;
+    }
+}
+
+void hapus(Bab* mapelList[], int mapelIndex) {
+    string namaHapus;
+    cout << "Masukkan nama bab yang ingin dihapus: ";
+    cin >> namaHapus;
+
+    Bab* current = mapelList[mapelIndex];
+    Bab* prev = nullptr;
+
+    while (current != nullptr && current->namabab != namaHapus) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == nullptr) {
+        cout << "Bab tidak ditemukan." << endl;
+        return;
+    }
+
+    if (prev == nullptr) {
+        mapelList[mapelIndex] = current->next;
+    } else {
+        prev->next = current->next;
+    }
+
+    delete current;
+>>>>>>> d02c68ba0f1c0070e3e0fa2fc468757728603715
 }
 
 
 //Program Utama
 int main() {
+    //Inisialisasi
+    int loopsemua = 0, pilihan1;
+
     do 
     {
         //Inisialisasi bab
@@ -91,20 +126,23 @@ int main() {
         cout<<"2. Lihat Bab Materi Sesuai Mata Pelajaran dan Prioritas\n";
         cout<<"3. Hapus Bab Materi\n";
         cout<<"4. Keluar dari PRIORITASIN\n";
-        cout<<"Pilih Fitur :\n";
-        cout<<"========================================\n";
+        cout<<"Pilih Fitur :";
         cin>>pilihan1;
+        cout<<"========================================\n";
 
         switch (pilihan1)
         {
         case 1:
-            add(mapelIndex);
+            add(mapelList, mapelIndex);
+            loopsemua=0;
             break;
         case 2:
-            view();
+            view(mapelList, mapelIndex);
+            loopsemua=0;
             break;
         case 3:
-            hapus();
+            hapus(mapelList, mapelIndex);
+            loopsemua=0;
             break;
         case 4:
             loopsemua=1;
@@ -116,7 +154,7 @@ int main() {
         }
         
     }
-    while (loopsemua=0);
+    while (loopsemua == 0);
 
     cout<<"\n\n Terima Kasih";
 
