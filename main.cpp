@@ -59,15 +59,6 @@ void add(Bab* mapelList[], int mapelIndex) {
     }
 }
 
-<<<<<<< HEAD
-void view()
-{
- 
-}
-
-void hapus() {
-  
-=======
 void view(Bab* mapelList[], int mapelIndex) {
     Bab* ptr = mapelList[mapelIndex];
     while (ptr != nullptr) {
@@ -101,7 +92,6 @@ void hapus(Bab* mapelList[], int mapelIndex) {
     }
 
     delete current;
->>>>>>> d02c68ba0f1c0070e3e0fa2fc468757728603715
 }
 
 
@@ -112,11 +102,10 @@ int main() {
 
     do 
     {
-        //Inisialisasi bab
-        // Bab* mapelList[5];
-        // for (int i = 0; i < 5; ++i) 
-        //     mapelList[i] = nullptr;
-        // int mapelIndex = -1;
+        Bab* mapelList[5];
+        for (int i = 0; i < 5; ++i) 
+            mapelList[i] = nullptr;
+        int mapelIndex = -1;
 
         //Halaman Depan
         cout<<"Selamat Datang di PRIORITASIN\n";
@@ -133,7 +122,7 @@ int main() {
         switch (pilihan1)
         {
         case 1:
-            add(mapelList, mapelIndex);
+            add();
             loopsemua=0;
             break;
         case 2:

@@ -5,96 +5,98 @@ using namespace std;
 
 struct Node {
     string namabab;
-    int mapelIndex;
-    Node* next;
     string mapelbab;
+    int mapelIndex;
+    int prioritas;
+    Node* next;
 };
 
-class BabLinkedList {
-private:
-    Node* head;
-
-public:
-    BabLinkedList() {
-        head = nullptr;
-    }
-
-    void add() {
+void add(Node* mapelList[], int mapelIndex) {
     Node* baru = new Node();
+
+    cout << "Mata Pelajaran :\n";
+    cout << "1. MM\n";
+    cout << "2. Fisika\n";
+    cout << "3. Kimia\n";
+    cout << "4. Biologi\n";
+    cout << "5. TPS\n";
+    cout << "Pilih Mata Pelajaran (1-5): ";
+    cin >> mapelIndex;
+
+        
+    if (mapelIndex >= 1 || mapelIndex <= 5) 
+    {
+        if (mapelIndex == 1)
+            baru->mapelbab = "MM";
+        else if (mapelIndex == 2)
+            baru->mapelbab = "Fisika";
+        else if (mapelIndex == 3)
+            baru->mapelbab = "Kimia";
+        else if (mapelIndex == 4)
+            baru->mapelbab = "Biologi";
+        else if (mapelIndex == 5)
+            baru->mapelbab = "TPS";      
+    } else 
+        cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
+
     cout << "Nama Bab Baru: ";
     cin >> baru->namabab;
 
-    int mapelIndex = -1; 
+    cout << "Prioritas Bab baru (1-5): ";
+    cin >> baru->prioritas;
 
-    do {
-        cout << "Mata Pelajaran :\n";
-        cout << "1. MM\n";
-        cout << "2. Fisika\n";
-        cout << "3. Kimia\n";
-        cout << "4. Biologi\n";
-        cout << "5. TPS\n";
-        cout << "Pilih Mata Pelajaran (1-5): ";
-        cin >> mapelIndex;
+    baru->mapelIndex -= 1;
 
-        
-        if (mapelIndex < 1 || mapelIndex > 5) {
-            cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
-        } else {
-            
-            if (mapelIndex == 1)
-                baru->mapelbab = "MM";
-            else if (mapelIndex == 2)
-                baru->mapelbab = "Fisika";
-            else if (mapelIndex == 3)
-                baru->mapelbab = "Kimia";
-            else if (mapelIndex == 4)
-                baru->mapelbab = "Biologi";
-            else if (mapelIndex == 5)
-                baru->mapelbab = "TPS";
-        }
-    } while (mapelIndex < 1 || mapelIndex > 5);
 
-    baru->mapelIndex = mapelIndex - 1;
 
-    baru->next = nullptr;
-
-    if (head == nullptr) {
-        head = baru;
+    if (mapelList[mapelIndex] == nullptr) {
+            mapelList[mapelIndex] = baru;
+            baru->next = nullptr;
     } else {
-        Node* temp = head;
-        while (temp->next != nullptr) {
+        Node* temp = mapelList[mapelIndex];
+        while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas)
+        {
+            baru->next = temp->next;
             temp = temp->next;
         }
         temp->next = baru;
     }
+    baru->next = nullptr;
     cout << "Bab berhasil ditambahkan.\n";
 }
 
-   void view() {
-    if (head == nullptr) {
-        cout << "Linked list kosong.\n";
-        return;
+void view(Node* mapelList[], int mapelIndex) {
+    for (int i =0; i<5; i++)
+    {
+
+        mapelIndex = i;
+        if (mapelList[mapelIndex] == nullptr) {
+            cout << "Linked list kosong.\n";
+        }
+        Node* temp = mapelList[mapelIndex];
+        while (temp != nullptr) {
+            cout << "Nama Bab: " << temp->namabab << "(" << temp->mapelbab <<")\n";
+            temp = temp->next;
+        }
+        cout<<"==================\n";
     }
-    cout << "Daftar Bab:\n";
-    Node* temp = head;
-    while (temp != nullptr) {
-        cout << "Nama Bab: " << temp->namabab << ", Mata Pelajaran: " << temp->mapelbab << endl;
-        temp = temp->next;
-    }
-    }
+}
 
     
-    void del() {
-    if (head == nullptr) {
+void del(Node* mapelList[], int mapelIndex) {
+    if (mapelList == nullptr) {
         cout << "Linked list kosong.\n";
         return;
     }
 
     string namabab;
+    cout << "Masukkan Nama Mapel yang ingin dihapus: ";
+    cin >> mapelIndex;
+
     cout << "Masukkan Nama Bab yang ingin dihapus: ";
     cin >> namabab;
 
-    Node* temp = head;
+    Node* temp = mapelList[mapelIndex];
     Node* prev = nullptr;
 
     // Mencari node dengan namabab yang sesuai
@@ -106,7 +108,7 @@ public:
     // Jika node yang ingin dihapus berada di head
     if (temp != nullptr && temp->namabab == namabab) {
         if (prev == nullptr) {
-            head = temp->next;
+            mapelList[mapelIndex] = temp->next;
         } else {
             prev->next = temp->next;
         }
@@ -115,36 +117,14 @@ public:
     } else {
         cout << "Bab dengan nama " << namabab << " tidak ditemukan.\n";
     }
-
-    int mapelIndex;
-    cout << "Masukkan Mapel Index yang ingin dihapus (1-5): ";
-    cin >> mapelIndex;
-
-    Node* temp2 = head;
-    Node* prev2 = nullptr;
-
-    // Mencari node dengan mapelIndex yang sesuai
-    while (temp2 != nullptr && temp2->mapelIndex != mapelIndex) {
-        prev2 = temp2;
-        temp2 = temp2->next;
-    }
-
-    // Jika node yang ingin dihapus berada di head
-    if (temp2 != nullptr && temp2->mapelIndex == mapelIndex) {
-        if (prev2 == nullptr) {
-            head = temp2->next;
-        } else {
-            prev2->next = temp2->next;
-        }
-        delete temp2;
-        cout << "Bab dengan Mapel Index " << mapelIndex << " berhasil dihapus.\n";
-    } 
 }
 
-};
 
 int main() {
-    BabLinkedList linkedList;
+    Node* mapelList[5];
+        for (int i = 0; i < 5; ++i) 
+            mapelList[i] = nullptr;
+        int mapelIndex = -1;
     int choice;
 
     do {
@@ -155,26 +135,24 @@ int main() {
         cout<<"2. Lihat Bab Materi Sesuai Mata Pelajaran dan Prioritas\n";
         cout<<"3. Hapus Bab Materi\n";
         cout<<"4. Keluar dari PRIORITASIN\n";
-        cout<<"Pilih Fitur :\n";
-        cout<<"========================================\n";
+        cout<<"Pilih Fitur :";
         cin>>choice;
-
         switch (choice) {
             case 1:
-                linkedList.add();
+                add(mapelList, mapelIndex);
                 break;
             case 2:
-                linkedList.view();
+                view(mapelList, mapelIndex);
                 break;
-            case 3:
-                linkedList.del();
-                break;
+            case 3 :
+                del(mapelList, mapelIndex);
             case 4:
                 cout << "Program selesai.\n";
                 break;
             default:
                 cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
         }
+        cout<<"========================================\n\n\n";
     } while (choice != 4);
 
     return 0;
