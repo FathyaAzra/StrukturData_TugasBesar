@@ -1,121 +1,181 @@
-//Just a file to see/put references
-
 #include <iostream>
-#include <cstring>
+#include <string>
+
 using namespace std;
 
-struct Book {
-    char name[30];
-    char author[30];
-    int id;
-    Book* next;
+struct Node {
+    string namabab;
+    int mapelIndex;
+    Node* next;
+    string mapelbab;
 };
 
-struct Student {
-    char name[30];
-    char email[20];
-    char book[20];
-    char a[30];
-    int id;
-    Student* next;
+class BabLinkedList {
+private:
+    Node* head;
+
+public:
+    BabLinkedList() {
+        head = nullptr;
+    }
+
+    void add() {
+    Node* baru = new Node();
+    cout << "Nama Bab Baru: ";
+    cin >> baru->namabab;
+
+    int mapelIndex = -1; 
+
+    do {
+        cout << "Mata Pelajaran :\n";
+        cout << "1. MM\n";
+        cout << "2. Fisika\n";
+        cout << "3. Kimia\n";
+        cout << "4. Biologi\n";
+        cout << "5. TPS\n";
+        cout << "Pilih Mata Pelajaran (1-5): ";
+        cin >> mapelIndex;
+
+        
+        if (mapelIndex < 1 || mapelIndex > 5) {
+            cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
+        } else {
+            
+            if (mapelIndex == 1)
+                baru->mapelbab = "MM";
+            else if (mapelIndex == 2)
+                baru->mapelbab = "Fisika";
+            else if (mapelIndex == 3)
+                baru->mapelbab = "Kimia";
+            else if (mapelIndex == 4)
+                baru->mapelbab = "Biologi";
+            else if (mapelIndex == 5)
+                baru->mapelbab = "TPS";
+        }
+    } while (mapelIndex < 1 || mapelIndex > 5);
+
+    baru->mapelIndex = mapelIndex - 1;
+
+    baru->next = nullptr;
+
+    if (head == nullptr) {
+        head = baru;
+    } else {
+        Node* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = baru;
+    }
+    cout << "Bab berhasil ditambahkan.\n";
+}
+
+   void view() {
+    if (head == nullptr) {
+        cout << "Linked list kosong.\n";
+        return;
+    }
+    cout << "Daftar Bab:\n";
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout << "Nama Bab: " << temp->namabab << ", Mata Pelajaran: " << temp->mapelbab << endl;
+        temp = temp->next;
+    }
+    }
+
+    
+    void del() {
+    if (head == nullptr) {
+        cout << "Linked list kosong.\n";
+        return;
+    }
+
+    string namabab;
+    cout << "Masukkan Nama Bab yang ingin dihapus: ";
+    cin >> namabab;
+
+    Node* temp = head;
+    Node* prev = nullptr;
+
+    // Mencari node dengan namabab yang sesuai
+    while (temp != nullptr && temp->namabab != namabab) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // Jika node yang ingin dihapus berada di head
+    if (temp != nullptr && temp->namabab == namabab) {
+        if (prev == nullptr) {
+            head = temp->next;
+        } else {
+            prev->next = temp->next;
+        }
+        delete temp;
+        cout << "Bab dengan nama " << namabab << " berhasil dihapus.\n";
+    } else {
+        cout << "Bab dengan nama " << namabab << " tidak ditemukan.\n";
+    }
+
+    int mapelIndex;
+    cout << "Masukkan Mapel Index yang ingin dihapus (1-5): ";
+    cin >> mapelIndex;
+
+    Node* temp2 = head;
+    Node* prev2 = nullptr;
+
+    // Mencari node dengan mapelIndex yang sesuai
+    while (temp2 != nullptr && temp2->mapelIndex != mapelIndex) {
+        prev2 = temp2;
+        temp2 = temp2->next;
+    }
+
+    // Jika node yang ingin dihapus berada di head
+    if (temp2 != nullptr && temp2->mapelIndex == mapelIndex) {
+        if (prev2 == nullptr) {
+            head = temp2->next;
+        } else {
+            prev2->next = temp2->next;
+        }
+        delete temp2;
+        cout << "Bab dengan Mapel Index " << mapelIndex << " berhasil dihapus.\n";
+    } 
+}
+
 };
-
-Book* start_lib = nullptr;
-Student* start = nullptr;
-
-Book* initialize_lib(Book* start);
-Student* book_issue(Student* start);
-Student* book_return(Student* start);
-void display(Student* start);
-Book* delete_book(int id);
-Book* add_book(char bookname[], char authorname[], int id);
-void greetings();
-void main_menu();
 
 int main() {
-    start_lib = initialize_lib(start_lib);
-    greetings();
-    main_menu();
+    BabLinkedList linkedList;
+    int choice;
+
+    do {
+       cout<<"Selamat Datang di PRIORITASIN\n";
+        cout<<"========================================\n";
+        cout<<"Pilih Fitur :\n";
+        cout<<"1. Tambah Bab Materi\n";
+        cout<<"2. Lihat Bab Materi Sesuai Mata Pelajaran dan Prioritas\n";
+        cout<<"3. Hapus Bab Materi\n";
+        cout<<"4. Keluar dari PRIORITASIN\n";
+        cout<<"Pilih Fitur :\n";
+        cout<<"========================================\n";
+        cin>>choice;
+
+        switch (choice) {
+            case 1:
+                linkedList.add();
+                break;
+            case 2:
+                linkedList.view();
+                break;
+            case 3:
+                linkedList.del();
+                break;
+            case 4:
+                cout << "Program selesai.\n";
+                break;
+            default:
+                cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
+        }
+    } while (choice != 4);
+
     return 0;
-}
-
-// void greetings() {
-//     // Greetings display
-//      printf("\n\n");
-//     printf("\t\t\t     ****************************************\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     *     ----------------------------     *\n");
-//     printf("\t\t\t     *      WELCOME TO STUDENT LIBRARY      *\n");
-//     printf("\t\t\t     *     ----------------------------     *\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     ****************************************\n");
-//     printf("\n\n");
-//     printf("\t\t\t     ****************************************\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     *       ------------------------       *\n");
-//     printf("\t\t\t     *           STUDENT LIBRARY            *\n");
-//     printf("\t\t\t     *       ------------------------       *\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     *       Mumbai,Maharashtra,India       *\n");
-//     printf("\t\t\t     *     Email: studentlib@gmail.com      *\n");
-//     printf("\t\t\t     *     Contact:8800991010,8800992020    *\n");
-//     printf("\t\t\t     *                                      *\n");
-//     printf("\t\t\t     ****************************************\n");
-//     printf("\n\n\t\t\t             Press any key to continue: ");
-//     getch();
-
-
-
-    // // Inisialisasi linked list untuk setiap mata pelajaran
-    // SubjectLinkedList mathList("Matematika");
-    // mathList.addTopic("Aljabar");
-    // mathList.addTopic("Trigonometri");
-    // mathList.addTopic("Geometri");
-
-    // SubjectLinkedList physicsList("Fisika");
-    // physicsList.addTopic("Mekanika");
-    // physicsList.addTopic("Termodinamika");
-    // physicsList.addTopic("Optika");
-
-    // // Menampilkan topik-topik per mata pelajaran
-    // mathList.displayTopics();
-    // physicsList.displayTopics();
-// }
-
-void main_menu() {
-    // Main menu logic
-    // ... (Same as in your C code)
-}
-
-Book* initialize_lib(Book* start) {
-    // Initialization of library books
-    // ... (Same as in your C code)
-}
-
-Student* book_issue(Student* start) {
-    // Book issue logic
-    // ... (Same as in your C code)
-}
-
-Student* book_return(Student* start) {
-    // Book return logic
-    // ... (Same as in your C code)
-}
-
-void display(Student* start) {
-    // Display logic
-    // ... (Same as in your C code)
-}
-
-Book* delete_book(int id) {
-    // Book deletion logic
-    // ... (Same as in your C code)
-}
-
-Book* add_book(char bookname[], char authorname[], int id) {
-    // Book addition logic
-    // ... (Same as in your C code)
 }

@@ -65,25 +65,23 @@ void add(int mapelIndex)
 
 void view()
 {
-
+ 
 }
 
-void hapus()
-{
-    Bab* ptr;
-    cout<<"Masukkan nama bab : ";
-    cin>>ptr->namabab;
+void hapus() {
+  
 }
+
 
 //Program Utama
 int main() {
     do 
     {
         //Inisialisasi bab
-        Bab* mapelList[5];
-        for (int i = 0; i < 5; ++i) 
-            mapelList[i] = nullptr;
-        int mapelIndex = -1;
+        // Bab* mapelList[5];
+        // for (int i = 0; i < 5; ++i) 
+        //     mapelList[i] = nullptr;
+        // int mapelIndex = -1;
 
         //Halaman Depan
         cout<<"Selamat Datang di PRIORITASIN\n";
