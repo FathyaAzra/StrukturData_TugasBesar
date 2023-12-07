@@ -13,15 +13,16 @@ struct Node {
 
 void tail(Node* mapelList[], int mapelIndex)
 {
-    Node* tail = mapelList[mapelIndex];
-    while (tail->next != nullptr)
+    Node* tail[5];
+    tail[mapelIndex] = mapelList[mapelIndex];
+    while (tail[mapelIndex]->next != nullptr)
         {
-            tail = tail->next;
+            tail[mapelIndex] = tail[mapelIndex]->next;
         }
     if (mapelIndex < 4 && mapelList[mapelIndex + 1] != nullptr) {
-        tail->next = mapelList[mapelIndex + 1];
+        tail[mapelIndex]->next = mapelList[mapelIndex + 1];
     } else {
-        tail->next = nullptr;
+        tail[mapelIndex]->next = nullptr;
     }
 }
 
