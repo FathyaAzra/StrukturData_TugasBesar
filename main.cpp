@@ -11,8 +11,24 @@ struct Node {
     Node* next;
 };
 
-void add(Node* mapelList[], int mapelIndex) {
+void tail(Node* mapelList[], int mapelIndex)
+{
+    Node* tail = mapelList[mapelIndex];
+    while (tail->next != nullptr)
+        {
+            tail = tail->next;
+        }
+    if (mapelIndex < 4 && mapelList[mapelIndex + 1] != nullptr) {
+        tail->next = mapelList[mapelIndex + 1];
+    } else {
+        tail->next = nullptr;
+    }
+}
+
+void add(Node* mapelList[], int inputMapelIndex) {
     Node* baru = new Node();
+
+    int mapelIndex = inputMapelIndex;
 
     cout << "Mata Pelajaran :\n";
     cout << "1. MM\n";
@@ -24,7 +40,7 @@ void add(Node* mapelList[], int mapelIndex) {
     cin >> mapelIndex;
 
         
-    if (mapelIndex >= 1 || mapelIndex <= 5) 
+    if (mapelIndex >= 1 && mapelIndex <= 5) 
     {
         if (mapelIndex == 1)
             baru->mapelbab = "MM";
@@ -37,7 +53,10 @@ void add(Node* mapelList[], int mapelIndex) {
         else if (mapelIndex == 5)
             baru->mapelbab = "TPS";      
     } else 
+    {
         cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
+        return;
+    }
 
     cout << "Nama Bab Baru: ";
     cin >> baru->namabab;
@@ -66,17 +85,19 @@ void add(Node* mapelList[], int mapelIndex) {
 }
 
 void view(Node* mapelList[], int mapelIndex) {
-    for (int i =0; i<5; i++)
+    for (int i =0; i<5; ++i)
     {
-
-        mapelIndex = i;
-        if (mapelList[mapelIndex] == nullptr) {
+        tail(mapelList, i);
+        cout << "Subject " << i + 1 << ":\n";
+        if (mapelList[i] == nullptr) {
             cout << "Linked list kosong.\n";
-        }
-        Node* temp = mapelList[mapelIndex];
-        while (temp != nullptr) {
-            cout << "Nama Bab: " << temp->namabab << "(" << temp->mapelbab <<")\n";
-            temp = temp->next;
+        }else 
+        {
+            Node* temp = mapelList[i];
+            while (temp != nullptr) {
+                cout << "Nama Bab: " << temp->namabab << "(" << temp->mapelbab <<")\n";
+                temp = temp->next;
+            }
         }
         cout<<"==================\n";
     }
@@ -146,6 +167,7 @@ int main() {
                 break;
             case 3 :
                 del(mapelList, mapelIndex);
+                break;
             case 4:
                 cout << "Program selesai.\n";
                 break;
