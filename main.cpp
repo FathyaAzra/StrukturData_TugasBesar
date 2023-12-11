@@ -11,34 +11,33 @@ struct Node {
     Node* next;
 };
 
-void add(Node* mapelList[], int inputMapelIndex) {
+void add(Node* mapelList[], int mapelIndex) 
+{
     Node* baru = new Node();
 
-    int mapelIndex = inputMapelIndex;
-
-    cout << "Mata Pelajaran :\n";
-    cout << "1. MM\n";
-    cout << "2. Fisika\n";
-    cout << "3. Kimia\n";
-    cout << "4. Biologi\n";
-    cout << "5. TPS\n";
-    cout << "Pilih Mata Pelajaran (1-5): ";
-    cin >> mapelIndex;
-
-    if (mapelIndex >= 1 && mapelIndex <= 5) {
-        if (mapelIndex == 1)
-            baru->mapelbab = "MM";
-        else if (mapelIndex == 2)
-            baru->mapelbab = "Fisika";
-        else if (mapelIndex == 3)
-            baru->mapelbab = "Kimia";
-        else if (mapelIndex == 4)
-            baru->mapelbab = "Biologi";
-        else if (mapelIndex == 5)
-            baru->mapelbab = "TPS";
-    } else {
-        cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
-        return;
+    if (mapelIndex >= 1 && mapelIndex <= 5) 
+    {
+        switch (mapelIndex)
+        {
+            case 1 : 
+                baru->mapelbab = "MM";
+                break;
+            case 2 : 
+                baru->mapelbab = "Fisika";
+                break;
+            case 3 : 
+                baru->mapelbab = "Kimia";
+                break;
+            case 4 : 
+                baru->mapelbab = "Biologi";
+                break;
+            case 5 : 
+                baru->mapelbab = "TPS";
+                break;
+            default : 
+                cout<<"Pilihan tidak valid. \n\n";
+                return;
+        }
     }
 
     cout << "Nama Bab Baru: ";
@@ -51,35 +50,40 @@ void add(Node* mapelList[], int inputMapelIndex) {
 
     // Check if the entry already exists
     Node* temp = mapelList[mapelIndex - 1];
-    while (temp != nullptr) {
-        if (temp->namabab == baru->namabab) {
+    while (temp != nullptr) 
+    {
+        if (temp->namabab == baru->namabab) 
+        {
             cout << "Bab sudah ada dalam mata pelajaran ini. Tidak dapat menambahkan duplikat.\n";
-            delete baru; // Clean up the allocated memory for duplicate entry
+            delete baru;
             return;
         }
         temp = temp->next;
     }
 
-    if (mapelList[mapelIndex - 1] == nullptr) {
+    if (mapelList[mapelIndex - 1] == nullptr) 
+    {
         mapelList[mapelIndex - 1] = baru;
         baru->next = nullptr;
-    } else {
+    } else 
+    {
         temp = mapelList[mapelIndex - 1];
-        while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas) {
+        while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas)
             temp = temp->next;
-        }
         baru->next = temp->next;
         temp->next = baru;
     }
     cout << "Bab berhasil ditambahkan.\n";
 }
 
-void viewall(Node* mapelList[]) {
+void viewall(Node* mapelList[]) 
+{
     Node* combinedList = nullptr;
     Node* tailNode = nullptr;
 
     // Merge all linked lists into one combined list
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 5; ++i) 
+    {
         Node* temp = mapelList[i];
 
         while (temp != nullptr) {
@@ -101,7 +105,6 @@ void viewall(Node* mapelList[]) {
     combinedList = nullptr;  // Reset combinedList to reconstruct it with sorted nodes
 
     while (current != nullptr) {
-        Node* next = current->next;
 
         if (combinedList == nullptr || combinedList->prioritas >= current->prioritas) {
             current->next = combinedList;
@@ -117,7 +120,7 @@ void viewall(Node* mapelList[]) {
             currentSorted->next = current;
         }
 
-        current = next;
+        current = current->next;
     }
 
     // Display the sorted linked list
@@ -130,10 +133,9 @@ void viewall(Node* mapelList[]) {
     cout << "==================\n";
 
     // Clean up memory
-    Node* temp = combinedList;
-    while (temp != nullptr) {
-        Node* toDelete = temp;
-        temp = temp->next;
+    while (combinedList != nullptr) {
+        Node* toDelete = combinedList;
+        combinedList = combinedList->next;
         delete toDelete;
     }
 }
@@ -173,41 +175,56 @@ void del(Node*& listToDelete) {
 }
 
 
-int main() {
+int main() 
+{
     Node* mapelList[5];
     for (int i = 0; i < 5; ++i) 
         mapelList[i] = nullptr;
-
-    int choice;
     Node* combinedList = nullptr;
+    int choice;
     int selectedMapelIndex = -1;
 
-    do {
+    do 
+    {
         cout << "Selamat Datang di PRIORITASIN\n";
         cout << "========================================\n";
         cout << "Pilih Fitur :\n";
         cout << "1. Tambah Bab Materi\n";
-        cout << "2. Lihat Bab Materi Sesuai Mata Pelajaran dan Prioritas\n";
+        cout << "2. Lihat Bab Materi  sesuai prioritas\n";
         cout << "3. Hapus Bab Materi\n";
         cout << "4. Keluar dari PRIORITASIN\n";
         cout << "Pilih Fitur :";
         cin >> choice;
 
-        switch (choice) {
+        switch (choice) 
+        {
             case 1:
-                add(mapelList, -1);
+                cout << "Mata Pelajaran :\n";
+                cout << "1. MM\n";
+                cout << "2. Fisika\n";
+                cout << "3. Kimia\n";
+                cout << "4. Biologi\n";
+                cout << "5. TPS\n";
+                cout << "Pilih Mata Pelajaran (1-5): ";
+                cin >> selectedMapelIndex;
+                add(mapelList, selectedMapelIndex);
                 break;
             case 2:
                 viewall(mapelList);
                 break;
             case 3:
+                cout << "Mata Pelajaran :\n";
+                cout << "1. MM\n";
+                cout << "2. Fisika\n";
+                cout << "3. Kimia\n";
+                cout << "4. Biologi\n";
+                cout << "5. TPS\n";
                 cout << "Pilih Mata Pelajaran (1-5): ";
                 cin >> selectedMapelIndex;
-                if (selectedMapelIndex >= 1 && selectedMapelIndex <= 5) {
+                if (selectedMapelIndex >= 1 && selectedMapelIndex <= 5) 
                     del(mapelList[selectedMapelIndex - 1]);
-                } else {
+                else 
                     cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
-                }
                 break;
             case 4:
                 cout << "Program selesai.\n";
@@ -215,18 +232,6 @@ int main() {
             default:
                 cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
         }
-
-        // ... (other code in the loop)
     } while (choice != 4);
-
-    // Clean up memory for mapelList
-    for (int i = 0; i < 5; ++i) {
-        Node* temp = mapelList[i];
-        while (temp != nullptr) {
-            Node* toDelete = temp;
-            temp = temp->next;
-            delete toDelete;
-        }
-    }
     return 0;
 }
