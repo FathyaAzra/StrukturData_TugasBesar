@@ -11,21 +11,6 @@ struct Node {
     Node* next;
 };
 
-void tail(Node* mapelList[], int mapelIndex)
-{
-    Node* tail[5];
-    tail[mapelIndex] = mapelList[mapelIndex];
-    while (tail[mapelIndex]->next != nullptr)
-        {
-            tail[mapelIndex] = tail[mapelIndex]->next;
-        }
-    if (mapelIndex < 4 && mapelList[mapelIndex + 1] != nullptr) {
-        tail[mapelIndex]->next = mapelList[mapelIndex + 1];
-    } else {
-        tail[mapelIndex]->next = nullptr;
-    }
-}
-
 void add(Node* mapelList[], int inputMapelIndex) {
     Node* baru = new Node();
 
@@ -40,9 +25,7 @@ void add(Node* mapelList[], int inputMapelIndex) {
     cout << "Pilih Mata Pelajaran (1-5): ";
     cin >> mapelIndex;
 
-        
-    if (mapelIndex >= 1 && mapelIndex <= 5) 
-    {
+    if (mapelIndex >= 1 && mapelIndex <= 5) {
         if (mapelIndex == 1)
             baru->mapelbab = "MM";
         else if (mapelIndex == 2)
@@ -52,9 +35,8 @@ void add(Node* mapelList[], int inputMapelIndex) {
         else if (mapelIndex == 4)
             baru->mapelbab = "Biologi";
         else if (mapelIndex == 5)
-            baru->mapelbab = "TPS";      
-    } else 
-    {
+            baru->mapelbab = "TPS";
+    } else {
         cout << "Pilihan tidak valid. Silakan pilih lagi.\n";
         return;
     }
@@ -65,43 +47,80 @@ void add(Node* mapelList[], int inputMapelIndex) {
     cout << "Prioritas Bab baru (1-5): ";
     cin >> baru->prioritas;
 
-    baru->mapelIndex -= 1;
+    baru->mapelIndex = mapelIndex - 1;
 
-
-
-    if (mapelList[mapelIndex] == nullptr) {
-            mapelList[mapelIndex] = baru;
-            baru->next = nullptr;
+    if (mapelList[mapelIndex - 1] == nullptr) {
+        mapelList[mapelIndex - 1] = baru;
+        baru->next = nullptr;
     } else {
-        Node* temp = mapelList[mapelIndex];
-        while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas)
-        {
-            baru->next = temp->next;
+        Node* temp = mapelList[mapelIndex - 1];
+        while (temp->next != nullptr && temp->next->prioritas >= baru->prioritas) {
             temp = temp->next;
         }
+        baru->next = temp->next;
         temp->next = baru;
     }
-    baru->next = nullptr;
     cout << "Bab berhasil ditambahkan.\n";
 }
 
-void view(Node* mapelList[], int mapelIndex) {
-    for (int i =0; i<5; ++i)
-    {
-        tail(mapelList, i);
-        cout << "Subject " << i + 1 << ":\n";
-        if (mapelList[i] == nullptr) {
-            cout << "Linked list kosong.\n";
-        }else 
-        {
-            Node* temp = mapelList[i];
-            while (temp != nullptr) {
-                cout << "Nama Bab: " << temp->namabab << "(" << temp->mapelbab <<")\n";
+void viewall(Node* mapelList[]) {
+    Node* combinedList = nullptr;
+    Node* tailNode = nullptr;
+
+    // Merge all linked lists into one combined list
+    for (int i = 0; i < 5; ++i) {
+        Node* temp = mapelList[i];
+
+        while (temp != nullptr) {
+            if (combinedList == nullptr) {
+                combinedList = temp;
+            } else {
+                tailNode->next = temp;
+            }
+
+            while (temp->next != nullptr) {
                 temp = temp->next;
             }
+
+            tailNode = temp;
+            temp = temp->next;
         }
-        cout<<"==================\n";
     }
+
+    // Insertion sort to rearrange nodes based on priorities
+    Node* current = combinedList;
+    Node* sorted = nullptr;
+
+    while (current != nullptr) {
+        Node* next = current->next;
+
+        if (sorted == nullptr || sorted->prioritas >= current->prioritas) {
+            current->next = sorted;
+            sorted = current;
+        } else {
+            Node* currentSorted = sorted;
+
+            while (currentSorted->next != nullptr && currentSorted->next->prioritas < current->prioritas) {
+                currentSorted = currentSorted->next;
+            }
+
+            current->next = currentSorted->next;
+            currentSorted->next = current;
+        }
+
+        current = next;
+    }
+
+    combinedList = sorted;
+
+    // Display the sorted linked list
+    cout << "Combined Linked List (Sorted by Priority using Insertion Sort):\n";
+    Node* display = combinedList;
+    while (display != nullptr) {
+        cout << "Nama Bab: " << display->namabab << " (" << display->mapelbab << ")\n";
+        display = display->next;
+    }
+    cout << "==================\n";
 }
 
     
@@ -164,7 +183,7 @@ int main() {
                 add(mapelList, mapelIndex);
                 break;
             case 2:
-                view(mapelList, mapelIndex);
+                viewall(mapelList);
                 break;
             case 3 :
                 del(mapelList, mapelIndex);
