@@ -78,16 +78,16 @@ void add(Node* mapelList[], int mapelIndex)
 
 void viewall(Node* mapelList[]) 
 {
+    // Merge all linked lists into one combined list
     Node* combinedList = nullptr;
     Node* tailNode = nullptr;
 
-    // Merge all linked lists into one combined list
-    for (int i = 0; i < 5; ++i) 
-    {
+    for (int i = 0; i < 5; ++i) {
         Node* temp = mapelList[i];
 
         while (temp != nullptr) {
             Node* newNode = new Node(*temp);
+
             if (combinedList == nullptr) {
                 combinedList = newNode;
                 tailNode = newNode;
@@ -99,32 +99,30 @@ void viewall(Node* mapelList[])
             temp = temp->next;
         }
     }
-
-    // Insertion sort to rearrange nodes based on priorities
+    
+    Node* sortedList = nullptr;
     Node* current = combinedList;
-    combinedList = nullptr;  // Reset combinedList to reconstruct it with sorted nodes
 
     while (current != nullptr) {
+        Node* nextNode = current->next;
 
-        if (combinedList == nullptr || combinedList->prioritas >= current->prioritas) {
-            current->next = combinedList;
-            combinedList = current;
+        if (sortedList == nullptr || sortedList->prioritas >= current->prioritas) {
+            current->next = sortedList;
+            sortedList = current;
         } else {
-            Node* currentSorted = combinedList;
-
-            while (currentSorted->next != nullptr && currentSorted->next->prioritas < current->prioritas) {
-                currentSorted = currentSorted->next;
+            Node* sortedCurrent = sortedList;
+            while (sortedCurrent->next != nullptr && sortedCurrent->next->prioritas < current->prioritas) {
+                sortedCurrent = sortedCurrent->next;
             }
-
-            current->next = currentSorted->next;
-            currentSorted->next = current;
+            current->next = sortedCurrent->next;
+            sortedCurrent->next = current;
         }
 
-        current = current->next;
+        current = nextNode;
     }
 
     // Display the sorted linked list
-    cout << "Combined Linked List (Sorted by Priority using Insertion Sort):\n";
+    cout << "Materi Pelajaran (diurutkan berdasarkan prioritas):\n";
     Node* display = combinedList;
     while (display != nullptr) {
         cout << "Nama Bab: " << display->namabab << " (" << display->mapelbab << ")\n";
