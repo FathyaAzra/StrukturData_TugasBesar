@@ -82,16 +82,20 @@ void viewall(Node* mapelList[])
     Node* combinedList = nullptr;
     Node* tailNode = nullptr;
 
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 5; ++i) 
+    {
         Node* temp = mapelList[i];
 
-        while (temp != nullptr) {
+        while (temp != nullptr) 
+        {
             Node* newNode = new Node(*temp);
 
-            if (combinedList == nullptr) {
+            if (combinedList == nullptr) 
+            {
                 combinedList = newNode;
                 tailNode = newNode;
-            } else {
+            } else 
+            {
                 tailNode->next = newNode;
                 tailNode = tailNode->next;
             }
@@ -103,15 +107,19 @@ void viewall(Node* mapelList[])
     Node* sortedList = nullptr;
     Node* current = combinedList;
 
-    while (current != nullptr) {
+    while (current != nullptr) 
+    {
         Node* nextNode = current->next;
 
-        if (sortedList == nullptr || sortedList->prioritas >= current->prioritas) {
+        if (sortedList == nullptr || sortedList->prioritas >= current->prioritas) 
+        {
             current->next = sortedList;
             sortedList = current;
-        } else {
+        } else 
+        {
             Node* sortedCurrent = sortedList;
-            while (sortedCurrent->next != nullptr && sortedCurrent->next->prioritas < current->prioritas) {
+            while (sortedCurrent->next != nullptr && sortedCurrent->next->prioritas < current->prioritas) 
+            {
                 sortedCurrent = sortedCurrent->next;
             }
             current->next = sortedCurrent->next;
@@ -124,14 +132,16 @@ void viewall(Node* mapelList[])
     // Display the sorted linked list
     cout << "Materi Pelajaran (diurutkan berdasarkan prioritas):\n";
     Node* display = combinedList;
-    while (display != nullptr) {
+    while (display != nullptr) 
+    {
         cout << "Nama Bab: " << display->namabab << " (" << display->mapelbab << ")\n";
         display = display->next;
     }
     cout << "==================\n";
 
     // Clean up memory
-    while (combinedList != nullptr) {
+    while (combinedList != nullptr) 
+    {
         Node* toDelete = combinedList;
         combinedList = combinedList->next;
         delete toDelete;
@@ -139,8 +149,10 @@ void viewall(Node* mapelList[])
 }
 
 
-void del(Node*& listToDelete) {
-    if (listToDelete == nullptr) {
+void del(Node*& listToDelete) 
+{
+    if (listToDelete == nullptr) 
+    {
         cout << "Linked list kosong.\n";
         return;
     }
@@ -153,21 +165,23 @@ void del(Node*& listToDelete) {
     Node* temp = listToDelete;
     Node* prev = nullptr;
 
-    while (temp != nullptr && temp->namabab != namabab) {
+    while (temp != nullptr && temp->namabab != namabab) 
+    {
         prev = temp;
         temp = temp->next;
     }
 
     // Jika node yang ingin dihapus berada di head
-    if (temp != nullptr && temp->namabab == namabab) {
-        if (prev == nullptr) {
+    if (temp != nullptr && temp->namabab == namabab) 
+    {
+        if (prev == nullptr)
             listToDelete = temp->next;
-        } else {
+        else
             prev->next = temp->next;
-        }
         delete temp;
         cout << "Bab dengan nama " << namabab << " berhasil dihapus.\n";
-    } else {
+    } else 
+    {
         cout << "Bab dengan nama " << namabab << " tidak ditemukan.\n";
     }
 }
